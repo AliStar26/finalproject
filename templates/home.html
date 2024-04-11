@@ -1,0 +1,57 @@
+{% extends "base.html" %} 
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card mt-5">
+        <div class="card-body">
+          <h1 class="text-center mb-4" style="font-size: 36px;">Welcome to My Store</h1>
+          
+          {% if request.user.is_authenticated %}
+            <h2 class="text-center mb-4">Welcome, {{ request.user.username }}</h2>
+          {% else %}
+            <h2 class="text-center mb-4">Please Login</h2>
+          {% endif %}
+          
+          <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              {% for category in categories %}
+                <div class="carousel-item {% if forloop.first %} active {% endif %}">
+                  <img src="{{ category.image.url }}" class="d-block w-100" alt="{{ category.name }}" style="object-fit: cover; height: 300px; ">
+                  <div class="carousel-caption d-none d-md-block">
+                    <a href="{% url 'category_detail' category.id %}"  style= "font-weight: bold;   color: Red; text-decoration: none; font-size: 30px;">{{ category.name }}</a>
+                    {% if request.user.is_superuser %}
+                    <div class="text-center mb-4">
+                      <a href="{% url 'category_update' category.id %}" class="btn btn-primary">Update Category</a>
+                    </div>
+                    <form method="post" action="{% url 'category_delete' category.id %}" style="display: inline;">
+                      {% csrf_token %}
+                      
+                      <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?')">Delete</button>
+                  </form>
+                  {% endif %}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+          <div class="text-center">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" role="alert">{{message}}</div>
+        {% endfor %}
+          </div>
+         
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

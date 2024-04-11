@@ -1,0 +1,104 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'home' %}">Store</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a
+            href="{% url 'home' %}"
+            class="nav-link active"
+            aria-current="page"
+            href="#"
+            >Home</a
+          >
+        </li>
+        {% if user.is_superuser %}
+
+        <li class="nav-item">
+          <a
+            href="{% url 'category_create' %}"
+            class="nav-link active"
+            aria-current="page"
+            
+            >Create Category</a
+          >
+        </li>
+
+        <li class="nav-item">
+          <a
+            href="{% url 'product_create' %}"
+            class="nav-link active"
+            aria-current="page"
+           
+            >Create product</a
+          >
+        </li>
+        {% endif %}
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Categories
+          </a>
+          <ul class="dropdown-menu">
+            {% for category in categories %}
+            <li>
+              <a href="{% url 'category_detail' category.id %}" class="dropdown-item">{{ category.name }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </li>
+        <li class="nav-item">
+        </li>
+   
+      </ul>
+      <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            {% if user.is_authenticated %}
+              {{ user.username }}
+            {% else %}
+              Login
+            {% endif %}
+          </a>
+          <ul class="dropdown-menu">
+            {% if user.is_authenticated %}
+              <form  action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button class="dropdown-item" type="submit">Logout</button>
+              </form>
+            {% else %}
+              <li>
+                <a href="{% url 'signup' %}" class="dropdown-item">Signup</a>
+              </li>
+              <li>
+                <a href="{% url 'login' %}" class="dropdown-item">Login</a>
+              </li>
+            {% endif %}
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

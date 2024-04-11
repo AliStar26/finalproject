@@ -1,0 +1,10 @@
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #343a40; /* Цвет фона футера */
+    color: #ffffff; /* Цвет текста */
+    padding: 20px; /* Отступы внутри футера */
+  }
+  
